@@ -1,28 +1,34 @@
-# 테스트 케이스의 수 받아오기
-T = int(input())
- 
-# 테스트 케이스 수(T)만큼 숫자 N을 받아온다.
+T = int(input())  # 테스트 케이스의 수
+
 for test_case in range(1, T+1):
-    N = float(input())
-    ## 소수점 아래 12자리까지 계산한다.
-    # 이진수를 저장할 빈 리스트를 만들고
-    binary = []
-    # 12회 반복한다.
-    for i in range(-1, -13, -1):
-        if N >= 2 ** (i) :
-            binary.append(1)  # 리스트에 1 추가
-            N -= 2 ** (i)  # N 값 업데이트
-        else:
-            binary.append(0)  # 리스트에 0 추가
-         
-        # 종료 조건 추가하기
-        if N == 0:
-            print(f'#{test_case}', end=" ")
-            # binary 리스트에 저장한 이진수를 출력한다.
-            print("".join(x for x in map(str, binary)))
-            break
- 
-    # 소수점 아래 12자리 이내로 끝나지 않은 경우
-    else:
-        # overflow를 출력한다.
-        print(f'#{test_case} overflow')
+	# 자리 수 N, 16진수 hexa
+	N, hexa = input().split()
+	# 이진수를 담을 빈 리스트 생성
+	# 16진수 1자리가 2진수 4자리로 표시된다.
+	binary_list = []
+	
+	for i in hexa:
+		# 4자리 2진수를 저장할 리스트 생성
+		# 2진수의 앞자리는 0으로 채우기 위해 0으로 초기화한다.
+		binary_number = [0] * 4
+		
+		# A~F로 표시된 숫자를 10진수로 변경(A: 65)
+		try:
+			i = int(i)
+		except:
+			i = ord(i) - 55
+
+		# 10진수를 2진수로 변경
+		# 2로 나눈 나머지를 뒤에서부터 저장한다.
+		for j in range(4):
+			binary_number[3-j] = i % 2
+			i = i // 2
+			
+		binary_list.append(binary_number)
+	
+	# 테스트 케이스 번호와 답을 출력한다.
+	print(f'#{test_case}', end=' ')
+	for i in range(int(N)):
+		for j in range(4):
+			print(binary_list[i][j], end='')
+	print()
